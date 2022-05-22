@@ -1,0 +1,25 @@
+name: Main
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  main:
+    runs-on: macos-latest
+    steps:
+      - uses: swift-actions/setup-swift@v1.15.0
+        with:
+          swift-version: "5.6.0"
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v2
+        with:
+          path: .build
+          key: ${{ runner.os }}-OAuth2-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-OAuth2
+      - name: Build
+        run: swift build
+      - name: Test
+        run: swift test
