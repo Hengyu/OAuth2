@@ -20,6 +20,7 @@
 #if os(iOS)
 
 import AuthenticationServices
+import Foundation
 import SafariServices
 import UIKit
 #if !NO_MODULE_IMPORT
@@ -51,18 +52,14 @@ open class OAuth2Authorizer: OAuth2AuthorizerUI {
 
     // MARK: - OAuth2AuthorizerUI
 
-    /**
-     Uses `UIApplication` to open the authorize URL in iOS's browser.
-
-     - parameter url: The authorize URL to open
-     - throws: UnableToOpenAuthorizeURL on failure
-     */
+    /// Uses `UIApplication` to open the authorize `URL` in iOS's browser.
+    /// - Parameter url: The authorize `URL` to open.
     public func openAuthorizeURLInBrowser(_ url: URL) throws {
-#if !TARGET_IS_EXTENSION
-        UIApplication.shared.open(url)
-#else
-        throw OAuth2Error.unableToOpenAuthorizeURL
-#endif
+        if Bundle.isApplicationExtension {
+            throw OAuth2Error.unableToOpenAuthorizeURL
+        } else {
+            UIApplication.shared.open(url)
+        }
     }
 
     /**
@@ -343,6 +340,17 @@ class OAuth2ASWebAuthenticationPresentationContextProvider: NSObject, ASWebAuthe
         }
 
         fatalError("Invalid authConfig.authorizeContext, must be an ASPresentationAnchor but is \(String(describing: authorizer.oauth2.authConfig.authorizeContext))")
+    }
+}
+
+extension Bundle {
+
+    class var isApplicationExtension: Bool {
+        Bundle.main.isApplicationExtension
+    }
+
+    var isApplicationExtension: Bool {
+        bundleURL.pathExtension == "appex"
     }
 }
 
