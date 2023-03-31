@@ -8,7 +8,7 @@ OAuth2
 
 OAuth2 requires Xcode 13, the built framework can be used on **OS X 10.10**, **iOS 10** or **tvOS 10.0** and later.
 
-**OAuth2 is forked from the [OAuth2 by Pascal Pfiffner](https://github.com/p2/OAuth2) **. The main differences are:
+**OAuth2** is forked from [OAuth2](https://github.com/p2/OAuth2) by [Pascal Pfiffner](https://github.com/p2). Main differences are:
 
 - Built using Swift 5.6 and backward compability to iOS 10.0;
 - Use a new [keychain package](https://github.com/kishikawakatsumi/KeychainAccess) as the password storing provider.
